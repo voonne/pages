@@ -75,4 +75,38 @@ class GroupTest extends Unit
 		$this->group->addPage($page2);
 	}
 
+
+	public function testGetVisiblePage()
+	{
+		$page1 = Mockery::mock(Page::class);
+		$page2 = Mockery::mock(Page::class);
+
+		$page1->shouldReceive('getPageName')
+			->twice()
+			->withNoArgs()
+			->andReturn('page1');
+
+		$page1->shouldReceive('isVisibleInMenu')
+			->once()
+			->withNoArgs()
+			->andReturn(false);
+
+		$page2->shouldReceive('getPageName')
+			->twice()
+			->withNoArgs()
+			->andReturn('page2');
+
+		$page2->shouldReceive('isVisibleInMenu')
+			->once()
+			->withNoArgs()
+			->andReturn(true);
+
+		$this->group->addPage($page1);
+		$this->group->addPage($page2);
+
+		$this->assertEquals([
+			'page2' => $page2
+		], $this->group->getVisiblePages());
+	}
+
 }

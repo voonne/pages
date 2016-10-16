@@ -120,4 +120,23 @@ class Group
 		return $pages;
 	}
 
+
+	/**
+	 * Returns visible pages.
+	 *
+	 * @return array
+	 */
+	public function getVisiblePages()
+	{
+		$pages = [];
+
+		foreach ($this->getPages() as $name => $page) {
+			if ($page->isVisibleInMenu()) {
+				$pages[$name] = $page;
+			}
+		}
+
+		return $pages;
+	}
+
 }
