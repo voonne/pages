@@ -14,8 +14,8 @@ use Voonne\Controls\Control;
 use Voonne\Layouts\Layout;
 use Voonne\Layouts\Layout1\Layout1;
 use Voonne\Layouts\LayoutManager;
-use Voonne\Panels\Panel;
-use Voonne\Panels\PanelManager;
+use Voonne\Panels\Panels\Panel;
+use Voonne\Panels\Panels\PanelManager;
 use Voonne\Panels\Renderers\RendererManager;
 use Voonne\Voonne\Content\ContentForm;
 

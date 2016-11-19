@@ -13,7 +13,7 @@ use Voonne\Pages\InvalidStateException;
 use Voonne\Pages\Page;
 use Voonne\Panels\DuplicateEntryException;
 use Voonne\Panels\InvalidArgumentException;
-use Voonne\Panels\Panel;
+use Voonne\Panels\Panels\Panel;
 use Voonne\Panels\Renderers\RendererManager;
 use Voonne\Voonne\Content\ContentForm;
 
