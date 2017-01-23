@@ -4,10 +4,15 @@ namespace Voonne\TestPages;
 
 use Codeception\Test\Unit;
 use Mockery;
+use Mockery\MockInterface;
 use UnitTester;
+use Voonne\Layouts\LayoutManager;
 use Voonne\Pages\DuplicateEntryException;
 use Voonne\Pages\Page;
 use Voonne\Pages\PageManager;
+use Voonne\Panels\Renderers\RendererManager;
+use Voonne\Security\User;
+use Voonne\Voonne\Content\ContentForm;
 
 
 class PageManagerTest extends Unit
@@ -19,6 +24,26 @@ class PageManagerTest extends Unit
 	protected $tester;
 
 	/**
+	 * @var MockInterface
+	 */
+	private $layoutManager;
+
+	/**
+	 * @var MockInterface
+	 */
+	private $rendererManager;
+
+	/**
+	 * @var MockInterface
+	 */
+	private $contentForm;
+
+	/**
+	 * @var MockInterface
+	 */
+	private $user;
+
+	/**
 	 * @var PageManager
 	 */
 	private $pageManager;
@@ -26,7 +51,12 @@ class PageManagerTest extends Unit
 
 	protected function _before()
 	{
-		$this->pageManager = new PageManager();
+		$this->layoutManager = Mockery::mock(LayoutManager::class);
+		$this->rendererManager = Mockery::mock(RendererManager::class);
+		$this->contentForm = Mockery::mock(ContentForm::class);
+		$this->user = Mockery::mock(User::class);
+
+		$this->pageManager = new PageManager($this->layoutManager, $this->rendererManager, $this->contentForm, $this->user);
 	}
 
 
@@ -73,11 +103,18 @@ class PageManagerTest extends Unit
 			->withNoArgs()
 			->andReturn('page1');
 
+		$page1->shouldReceive('injectPrimary')
+			->once()
+			->with($this->layoutManager, $this->rendererManager, $this->contentForm, $this->user);
 
 		$page2->shouldReceive('getPageName')
 			->twice()
 			->withNoArgs()
 			->andReturn('page2');
+
+		$page2->shouldReceive('injectPrimary')
+			->once()
+			->with($this->layoutManager, $this->rendererManager, $this->contentForm, $this->user);
 
 		$this->pageManager->addPage('group1', $page1);
 		$this->pageManager->addPage('group1', $page2);

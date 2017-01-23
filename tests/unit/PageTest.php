@@ -15,6 +15,7 @@ use Voonne\Panels\DuplicateEntryException;
 use Voonne\Panels\InvalidArgumentException;
 use Voonne\Panels\Panels\Panel;
 use Voonne\Panels\Renderers\RendererManager;
+use Voonne\Security\User;
 use Voonne\Voonne\Content\ContentForm;
 
 
@@ -42,6 +43,11 @@ class PageTest extends Unit
 	private $contentForm;
 
 	/**
+	 * @var MockInterface
+	 */
+	private $user;
+
+	/**
 	 * @var Page
 	 */
 	private $page;
@@ -52,9 +58,10 @@ class PageTest extends Unit
 		$this->layoutManager = Mockery::mock(LayoutManager::class);
 		$this->rendererManager = Mockery::mock(RendererManager::class);
 		$this->contentForm = Mockery::mock(ContentForm::class);
+		$this->user = Mockery::mock(User::class);
 
 		$this->page = new TestPage('name', 'title');
-		$this->page->injectPrimary($this->layoutManager, $this->rendererManager, $this->contentForm);
+		$this->page->injectPrimary($this->layoutManager, $this->rendererManager, $this->contentForm, $this->user);
 	}
 
 
@@ -69,9 +76,10 @@ class PageTest extends Unit
 		$this->assertEquals('name', $this->page->getPageName());
 		$this->assertEquals('title', $this->page->getPageTitle());
 		$this->assertTrue($this->page->isVisibleInMenu());
+		$this->assertFalse($this->page->isAuthorized());
 
 		$this->expectException(InvalidStateException::class);
-		$this->page->injectPrimary($this->layoutManager, $this->rendererManager, $this->contentForm);
+		$this->page->injectPrimary($this->layoutManager, $this->rendererManager, $this->contentForm, $this->user);
 	}
 
 

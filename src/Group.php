@@ -113,6 +113,7 @@ class Group
 
 		foreach ($this->pages as $priority) {
 			foreach ($priority as $name => $page) {
+				/** @var Page $page */
 				$pages[$name] = $page;
 			}
 		}
@@ -131,7 +132,8 @@ class Group
 		$pages = [];
 
 		foreach ($this->getPages() as $name => $page) {
-			if ($page->isVisibleInMenu()) {
+			/** @var Page $page */
+			if ($page->isVisibleInMenu() && $page->isAuthorized()) {
 				$pages[$name] = $page;
 			}
 		}

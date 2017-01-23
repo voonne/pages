@@ -17,6 +17,7 @@ use Voonne\Layouts\LayoutManager;
 use Voonne\Panels\Panels\Panel;
 use Voonne\Panels\Panels\PanelManager;
 use Voonne\Panels\Renderers\RendererManager;
+use Voonne\Security\User;
 use Voonne\Voonne\Content\ContentForm;
 
 
@@ -42,6 +43,11 @@ abstract class Page extends Control
 	 * @var ContentForm
 	 */
 	private $contentForm;
+
+	/**
+	 * @var User
+	 */
+	private $user;
 
 	/**
 	 * @var string
@@ -120,6 +126,26 @@ abstract class Page extends Control
 
 
 	/**
+	 * Checks whether the user is authorized to access this page.
+	 *
+	 * @return bool
+	 */
+	public function isAuthorized()
+	{
+		return false;
+	}
+
+
+	/**
+	 * @return User
+	 */
+	protected function getUser()
+	{
+		return $this->user;
+	}
+
+
+	/**
 	 * @param string $layout
 	 */
 	public function setLayout($layout)
@@ -150,8 +176,13 @@ abstract class Page extends Control
 	 * @param LayoutManager $layoutManager
 	 * @param RendererManager $rendererManager
 	 * @param ContentForm $contentForm
+	 * @param User $user
 	 */
-	public function injectPrimary(LayoutManager $layoutManager, RendererManager $rendererManager, ContentForm $contentForm)
+	public function injectPrimary(
+		LayoutManager $layoutManager,
+		RendererManager $rendererManager,
+		ContentForm $contentForm,
+		User $user)
 	{
 		if($this->layoutManager !== null) {
 			throw new InvalidStateException('Method ' . __METHOD__ . ' is intended for initialization and should not be called more than once.');
@@ -160,6 +191,7 @@ abstract class Page extends Control
 		$this->layoutManager = $layoutManager;
 		$this->rendererManager = $rendererManager;
 		$this->contentForm = $contentForm;
+		$this->user = $user;
 	}
 
 
@@ -172,8 +204,7 @@ abstract class Page extends Control
 		$layout->injectPrimary(
 			$this->rendererManager,
 			$this->panelManager,
-			$this->contentForm
-		);
+			$this->contentForm);
 
 		$this->addComponent($layout, 'layout');
 	}

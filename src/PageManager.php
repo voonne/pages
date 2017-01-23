@@ -11,6 +11,10 @@
 namespace Voonne\Pages;
 
 use Nette\SmartObject;
+use Voonne\Layouts\LayoutManager;
+use Voonne\Panels\Renderers\RendererManager;
+use Voonne\Security\User;
+use Voonne\Voonne\Content\ContentForm;
 
 
 class PageManager
@@ -19,9 +23,42 @@ class PageManager
 	use SmartObject;
 
 	/**
+	 * @var LayoutManager
+	 */
+	private $layoutManager;
+
+	/**
+	 * @var RendererManager
+	 */
+	private $rendererManager;
+
+	/**
+	 * @var ContentForm
+	 */
+	private $contentForm;
+
+	/**
+	 * @var User
+	 */
+	private $user;
+
+	/**
 	 * @var array
 	 */
 	private $groups = [];
+
+
+	public function __construct(
+		LayoutManager $layoutManager,
+		RendererManager $rendererManager,
+		ContentForm $contentForm,
+		User $user)
+	{
+		$this->layoutManager = $layoutManager;
+		$this->rendererManager = $rendererManager;
+		$this->contentForm = $contentForm;
+		$this->user = $user;
+	}
 
 
 	/**
@@ -65,6 +102,12 @@ class PageManager
 		if (!isset($this->getGroups()[$groupName])) {
 			throw new InvalidArgumentException("Group named '$groupName' does not exist.");
 		}
+
+		$page->injectPrimary(
+			$this->layoutManager,
+			$this->rendererManager,
+			$this->contentForm,
+			$this->user);
 
 		$this->getGroups()[$groupName]->addPage($page, $priority);
 

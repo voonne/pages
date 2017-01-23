@@ -80,6 +80,7 @@ class GroupTest extends Unit
 	{
 		$page1 = Mockery::mock(Page::class);
 		$page2 = Mockery::mock(Page::class);
+		$page3 = Mockery::mock(Page::class);
 
 		$page1->shouldReceive('getPageName')
 			->twice()
@@ -101,8 +102,29 @@ class GroupTest extends Unit
 			->withNoArgs()
 			->andReturn(true);
 
+		$page2->shouldReceive('isAuthorized')
+			->once()
+			->withNoArgs()
+			->andReturn(true);
+
+		$page3->shouldReceive('getPageName')
+			->twice()
+			->withNoArgs()
+			->andReturn('page3');
+
+		$page3->shouldReceive('isVisibleInMenu')
+			->once()
+			->withNoArgs()
+			->andReturn(true);
+
+		$page3->shouldReceive('isAuthorized')
+			->once()
+			->withNoArgs()
+			->andReturn(false);
+
 		$this->group->addPage($page1);
 		$this->group->addPage($page2);
+		$this->group->addPage($page3);
 
 		$this->assertEquals([
 			'page2' => $page2
