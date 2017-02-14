@@ -14,6 +14,7 @@ use Voonne\Pages\Page;
 use Voonne\Panels\DuplicateEntryException;
 use Voonne\Panels\InvalidArgumentException;
 use Voonne\Panels\Panels\Panel;
+use Voonne\Panels\Panels\PanelManager;
 use Voonne\Panels\Renderers\RendererManager;
 use Voonne\Security\User;
 use Voonne\Voonne\Content\ContentForm;
@@ -77,6 +78,7 @@ class PageTest extends Unit
 		$this->assertEquals('title', $this->page->getPageTitle());
 		$this->assertTrue($this->page->isVisibleInMenu());
 		$this->assertFalse($this->page->isAuthorized());
+		$this->assertInstanceOf(PanelManager::class, $this->page->getPanelManager());
 
 		$this->expectException(InvalidStateException::class);
 		$this->page->injectPrimary($this->layoutManager, $this->rendererManager, $this->contentForm, $this->user);

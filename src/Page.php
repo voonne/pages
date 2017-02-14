@@ -99,15 +99,6 @@ abstract class Page extends Control
 
 
 	/**
-	 * @return bool
-	 */
-	public function isVisibleInMenu()
-	{
-		return $this->visibleInMenu;
-	}
-
-
-	/**
 	 * Sets as visible.
 	 */
 	public function showInMenu()
@@ -122,6 +113,15 @@ abstract class Page extends Control
 	public function hideFromMenu()
 	{
 		$this->visibleInMenu = false;
+	}
+
+
+	/**
+	 * @return bool
+	 */
+	public function isVisibleInMenu()
+	{
+		return $this->visibleInMenu;
 	}
 
 
@@ -142,6 +142,15 @@ abstract class Page extends Control
 	protected function getUser()
 	{
 		return $this->user;
+	}
+
+
+	/**
+	 * @return PanelManager
+	 */
+	public function getPanelManager()
+	{
+		return $this->panelManager;
 	}
 
 
