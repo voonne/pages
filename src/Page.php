@@ -213,7 +213,9 @@ abstract class Page extends Control
 		$layout->injectPrimary(
 			$this->rendererManager,
 			$this->panelManager,
-			$this->contentForm);
+			$this->contentForm,
+			$this->user
+		);
 
 		$this->addComponent($layout, 'layout');
 	}
