@@ -182,6 +182,15 @@ abstract class Page extends Control
 
 
 	/**
+	 * @param Panel $panel
+	 */
+	public function removePanel(Panel $panel)
+	{
+		$this->panelManager->removePanel($panel);
+	}
+
+
+	/**
 	 * @param LayoutManager $layoutManager
 	 * @param RendererManager $rendererManager
 	 * @param ContentForm $contentForm
